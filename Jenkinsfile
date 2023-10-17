@@ -13,20 +13,18 @@ pipeline {
                 deleteDir()
             }
         }
-    }
-
-    stages {
+    
         stage('Clone') {
             steps {
                 git branch: 'main', url: 'https://github.com/marinaimeninnik/spring-framework-petclinic.git'
             }
         }
 
-    stage('Build') {
-      steps {
-        sh 'mvn clean package'
-      }
-    }
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
     
 
         // stage('Build and Push Docker Image') {
