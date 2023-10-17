@@ -11,7 +11,7 @@ pipeline {
                 // Checkout your source code from your version control system
                 // For example, using Git:
                     git 'https://github.com/marinaimeninnik/spring-framework-petclinic.git'
-                }
+                // }
             }
         }
 
