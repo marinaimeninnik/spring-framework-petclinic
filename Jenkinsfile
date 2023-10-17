@@ -30,11 +30,11 @@ pipeline {
             steps {
                 script {
                 def buildVersion = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                sh "sudo docker tag springcommunity:latest marinaimeninnik/springcommunity:latest"
-                sh "sudo docker tag springcommunity:latest marinaimeninnik/springcommunity:${buildVersion}"
+                sh "sudo docker tag docker.io/springcommunity/spring-framework-petclinic:latest marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:latest"
+                sh "sudo docker tag docker.io/springcommunity/spring-framework-petclinic:latest marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:${buildVersion}"
                 sh "sudo docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW"
-                sh "sudo docker push marinaimeninnik/springcommunity:latest"
-                sh "sudo docker push marinaimeninnik/springcommunity:${buildVersion}"
+                sh "sudo docker push marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:latest"
+                sh "sudo docker push marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:${buildVersion}"
                 }
             }
             }
