@@ -30,16 +30,16 @@ pipeline {
             steps {
                 script {
                 def buildVersion = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                sh "docker tag your-image-name:latest your-dockerhub-username/your-image-name:latest"
-                sh "docker tag your-image-name:latest your-dockerhub-username/your-image-name:${buildVersion}"
-                sh "docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW"
-                sh "docker push your-dockerhub-username/your-image-name:latest"
-                sh "docker push your-dockerhub-username/your-image-name:${buildVersion}"
+                sh "sudo docker tag your-image-name:latest your-dockerhub-username/your-image-name:latest"
+                sh "sudo docker tag your-image-name:latest your-dockerhub-username/your-image-name:${buildVersion}"
+                sh "sudo docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW"
+                sh "sudo docker push your-dockerhub-username/your-image-name:latest"
+                sh "sudo docker push your-dockerhub-username/your-image-name:${buildVersion}"
                 }
             }
             }
         }
-        
+
         post {
             always {
             sh 'docker logout'
