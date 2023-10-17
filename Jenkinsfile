@@ -1,6 +1,10 @@
 pipeline {
-     agent {
+    agent {
         label 'ubuntu22_04'
+    }
+
+    environment {
+    DOCKERHUB_CREDENTIALS = credentials('3fd6e258-dfed-4537-a548-c3272953e573')
     }
 
     stages {
@@ -9,6 +13,13 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/marinaimeninnik/spring-framework-petclinic.git'
             }
         }
+
+    stage('Build') {
+      steps {
+        sh 'mvn jib:build'
+      }
+    }
+    
 
         // stage('Build and Push Docker Image') {
         //     steps {
