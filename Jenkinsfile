@@ -8,6 +8,13 @@ pipeline {
     }
 
     stages {
+        stage('Clean workspace') {
+            steps {
+                deleteDir()
+            }
+        }
+
+    stages {
         stage('Clone') {
             steps {
                 git branch: 'main', url: 'https://github.com/marinaimeninnik/spring-framework-petclinic.git'
@@ -16,7 +23,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh 'mvn jib:build'
+        sh 'mvn clean package'
       }
     }
     
