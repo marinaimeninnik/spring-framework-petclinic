@@ -13,6 +13,7 @@ pipeline {
                 deleteDir()
             }
         }
+    }
 
     stages {
         stage('Clone') {
