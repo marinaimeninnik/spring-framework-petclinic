@@ -16,7 +16,7 @@ pipeline {
     
         stage('Clone') {
             steps {
-                git branch: 'main', url: 'https://github.com/marinaimeninnik/spring-framework-petclinic.git'
+                git branch: 'main', url: 'https://github.com/marinaimeninnik/springcommunity.git'
             }
         }
 
@@ -30,11 +30,11 @@ pipeline {
             steps {
                 script {
                 def buildVersion = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                sh "sudo docker tag spring-framework-petclinic:latest marinaimeninnik/spring-framework-petclinic:latest"
-                sh "sudo docker tag spring-framework-petclinic:latest marinaimeninnik/spring-framework-petclinic:${buildVersion}"
+                sh "sudo docker tag springcommunity:latest marinaimeninnik/springcommunity:latest"
+                sh "sudo docker tag springcommunity:latest marinaimeninnik/springcommunity:${buildVersion}"
                 sh "sudo docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW"
-                sh "sudo docker push marinaimeninnik/spring-framework-petclinic:latest"
-                sh "sudo docker push marinaimeninnik/spring-framework-petclinic:${buildVersion}"
+                sh "sudo docker push marinaimeninnik/springcommunity:latest"
+                sh "sudo docker push marinaimeninnik/springcommunity:${buildVersion}"
                 }
             }
             }
