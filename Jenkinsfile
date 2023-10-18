@@ -32,31 +32,31 @@ pipeline {
                     sh "sudo mvn clean package jib:dockerBuild -Djib.image=${IMAGE_NAME}:${BUILD_VERSION}"
                     
                     // Use Docker command to get the name of the last created container
-                    def containerName = sh(script: "sudo docker ps -l -q --format '{{.Names}}'", returnStdout: true)
+                    // def containerName = sh(script: "sudo docker ps -l -q --format '{{.Names}}'", returnStdout: true)
 
                     
-                    echo "The name of the last created container is: $containerName"
+                    // echo "The name of the last created container is: $containerName"
                     
                     // Now you can use the 'containerName' variable in subsequent stages or steps
                 }
             }
         }
-    }
-}
-        // stage('Tag and Push') {
-        //     steps {
-        //         // script {
-        //         // def buildVersion = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-        //         // sh "sudo docker tag docker.io/springcommunity/spring-framework-petclinic:latest marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:latest"
-        //         // sh "sudo docker tag docker.io/springcommunity/spring-framework-petclinic:latest marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:${buildVersion}"
-        //         // sh "sudo docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW"
-        //         // sh "sudo docker push marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:latest"
-        //         // sh "sudo docker push marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:${buildVersion}"
-        //         // }
-        //         // sh 'mvn jib:build'
+//     }
+// }
+        stage('Tag and Push') {
+            steps {
+                script {
+                def buildVersion = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                sh "sudo docker tag ${IMAGE_NAME}:${BUILD_VERSION} ${IMAGE_NAME}:latest"
+                sh "sudo docker tag ${IMAGE_NAME}:${BUILD_VERSION} ${IMAGE_NAME}:${buildVersion}"
+                sh "sudo docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW"
+                sh "sudo docker push ${IMAGE_NAME}:${BUILD_VERSION} ${IMAGE_NAME}:latest"
+                sh "sudo docker push ${IMAGE_NAME}:${BUILD_VERSION} ${IMAGE_NAME}:${buildVersion}"
+                }
+                
+            }
         //     }
-        //     }
-        // }
+        }
 
         // post {
         //     always {
@@ -78,6 +78,7 @@ pipeline {
         //         }
         //     }
         // }
-// }
+    }
+}
    
 
