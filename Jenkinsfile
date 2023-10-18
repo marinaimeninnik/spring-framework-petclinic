@@ -49,10 +49,12 @@ pipeline {
                 script {
                     def buildVersion = sh(script: 'echo $BUILD_NUMBER', returnStatus: true)
                     // sh "sudo docker tag ${IMAGE_NAME}:${BUILD_VERSION} ${IMAGE_NAME}:latest"
-                    sh "sudo docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:${buildVersion}"
-                    sh "sudo docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW"
-                    sh "sudo docker push ${IMAGE_NAME}:${buildVersion}"
-                    sh "sudo docker push ${IMAGE_NAME}:latest"
+                        sh "sudo docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:${buildVersion}"
+
+                    withCredentials([usernamePassword(credentialsId: ${DOCKERHUB_CREDENTIALS}, usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')])
+                        sh "sudo docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW"
+                        sh "sudo docker push ${IMAGE_NAME}:${buildVersion}"
+                        sh "sudo docker push ${IMAGE_NAME}:latest"
                 }
                 
             }
