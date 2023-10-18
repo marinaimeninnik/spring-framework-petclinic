@@ -32,7 +32,7 @@ pipeline {
                     sh "mvn clean package jib:dockerBuild -Djib.image=${IMAGE_NAME}:${BUILD_VERSION}"
                     
                     // Use Docker command to get the name of the last created container
-                    def containerName = sh(script: "docker ps -l -q --format '{{.Names}}'", returnStdout: true)
+                    def containerName = sh(script: "sudo docker ps -l -q --format '{{.Names}}'", returnStdout: true)
 
                     
                     echo "The name of the last created container is: $containerName"
