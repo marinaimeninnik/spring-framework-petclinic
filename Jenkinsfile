@@ -5,7 +5,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('3fd6e258-dfed-4537-a548-c3272953e573')
-        BUILD_VERSION = sh(script: 'echo $((BUILD_NUMBER + 0))', returnStatus: true).trim()
+        BUILD_VERSION = sh(script: 'echo $((BUILD_NUMBER + 0))', returnStatus: true)
         IMAGE_NAME = 'springcommunity/spring-framework-petclinic'
         LATEST_TAG = 'latest'
 
