@@ -40,7 +40,7 @@ pipeline {
             }
             }
         }
-    
+    }
         // stage('Tag and Push') {
         //     steps {
         //         // script {
@@ -78,4 +78,4 @@ pipeline {
         // }
         }
     }
-}
+
