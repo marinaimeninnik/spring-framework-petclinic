@@ -5,6 +5,10 @@ pipeline {
 
     environment {
     DOCKERHUB_CREDENTIALS = credentials('3fd6e258-dfed-4537-a548-c3272953e573')
+    BUILD_VERSION = sh(script: 'echo $((BUILD_NUMBER + 0))', returnStatus: true).trim()
+    IMAGE_NAME = 'springcommunity/spring-framework-petclinic'
+    LATEST_TAG = 'latest'
+
     }
 
     stages {
@@ -20,25 +24,37 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                sh 'mvn clean package'
+                // sh 'mvn clean package'
+                script {
+                // Build the Docker image and tag it with the build version
+                sh "mvn clean package jib:dockerBuild -Djib.image=${IMAGE_NAME}:${BUILD_VERSION}"
+                
+                // Use Docker command to get the name of the last created container
+                def containerName = sh(script: "docker ps -l -q --format '{{.Names}}'", returnStdout: true).trim()
+                
+                echo "The name of the last created container is: $containerName"
+                
+                // Now you can use the 'containerName' variable in subsequent stages or steps
+            }
             }
         }
     
-        stage('Tag and Push') {
-            steps {
-                script {
-                def buildVersion = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                sh "sudo docker tag docker.io/springcommunity/spring-framework-petclinic:latest marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:latest"
-                sh "sudo docker tag docker.io/springcommunity/spring-framework-petclinic:latest marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:${buildVersion}"
-                sh "sudo docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW"
-                sh "sudo docker push marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:latest"
-                sh "sudo docker push marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:${buildVersion}"
-                }
-            }
-            }
-        }
+        // stage('Tag and Push') {
+        //     steps {
+        //         // script {
+        //         // def buildVersion = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+        //         // sh "sudo docker tag docker.io/springcommunity/spring-framework-petclinic:latest marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:latest"
+        //         // sh "sudo docker tag docker.io/springcommunity/spring-framework-petclinic:latest marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:${buildVersion}"
+        //         // sh "sudo docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW"
+        //         // sh "sudo docker push marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:latest"
+        //         // sh "sudo docker push marinaimeninnik/docker.io/springcommunity/spring-framework-petclinic:${buildVersion}"
+        //         // }
+        //         // sh 'mvn jib:build'
+        //     }
+        //     }
+        // }
 
         post {
             always {
