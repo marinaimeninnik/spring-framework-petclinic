@@ -47,7 +47,7 @@ pipeline {
         stage('Tag and Push') {
             steps {
                 script {
-                    def buildVersion = sh(script: 'echo $((BUILD_NUMBER + 0))', returnStatus: true).trim()
+                    def buildVersion = sh(script: 'echo $BUILD_NUMBER', returnStatus: true)
                     // sh "sudo docker tag ${IMAGE_NAME}:${BUILD_VERSION} ${IMAGE_NAME}:latest"
                     sh "sudo docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:${buildVersion}"
                     sh "sudo docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW"
