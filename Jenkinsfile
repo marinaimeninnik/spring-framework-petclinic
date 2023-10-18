@@ -31,7 +31,7 @@ pipeline {
                 script {
                     // Build the Docker image and tag it with the build version
                     // sh "sudo mvn clean package jib:dockerBuild -Djib.image=${IMAGE_NAME}:${BUILD_VERSION}"
-                    sh "mvn clean package jib:dockerBuild" -Djib.image=${IMAGE_NAME}:latest
+                    sh "mvn clean package jib:dockerBuild -Djib.image=${IMAGE_NAME}:latest"
                     // Use Docker command to get the name of the last created container
                     // def containerName = sh(script: "sudo docker ps -l -q --format '{{.Names}}'", returnStdout: true)
 
