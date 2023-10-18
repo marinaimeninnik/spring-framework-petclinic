@@ -12,12 +12,12 @@ pipeline {
     }
 
     stages {
-        stage('Clean workspace') {
-            steps {
-                sh 'sudo rm -rf /home/vagrant/workspace/pet_clinic_CI_CD/CI'
-                deleteDir()
-            }
-        }
+        // stage('Clean workspace') {
+        //     steps {
+        //         sh 'sudo rm -rf /home/vagrant/workspace/pet_clinic_CI_CD/CI'
+        //         // deleteDir()
+        //     }
+        // }
     
         stage('Clone') {
             steps {
