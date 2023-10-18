@@ -48,8 +48,8 @@ pipeline {
             steps {
                 script {
                     def buildVersion = sh(script: 'echo $((BUILD_NUMBER + 0))', returnStatus: true).trim()
-                    sh "sudo docker tag --user "$(id -u):$(id -g)" -v /etc/passwd:/etc/passwd:ro ${IMAGE_NAME}:${BUILD_VERSION} ${IMAGE_NAME}:latest"
-                    sh "sudo docker tag --user "$(id -u):$(id -g)" -v /etc/passwd:/etc/passwd:ro ${IMAGE_NAME}:${BUILD_VERSION} ${IMAGE_NAME}:${buildVersion}"
+                    sh "sudo docker tag --user "${id -u}:${id -g}" -v /etc/passwd:/etc/passwd:ro ${IMAGE_NAME}:${BUILD_VERSION} ${IMAGE_NAME}:latest"
+                    sh "sudo docker tag --user "${id -u}:${id -g}" -v /etc/passwd:/etc/passwd:ro ${IMAGE_NAME}:${BUILD_VERSION} ${IMAGE_NAME}:${buildVersion}"
                     sh "sudo docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW"
                     sh "sudo docker push ${IMAGE_NAME}:${buildVersion}"
                     sh "sudo docker push ${IMAGE_NAME}:latest"
