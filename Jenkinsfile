@@ -27,27 +27,18 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                // sh 'mvn clean package'
+                
                 script {
-                    // Build the Docker image and tag it with the build version
-                    // sh "sudo mvn clean package jib:dockerBuild -Djib.image=${IMAGE_NAME}:${BUILD_VERSION}"
                     sh "mvn clean package jib:dockerBuild -Djib.image=${IMAGE_NAME}:latest"
-                    // Use Docker command to get the name of the last created container
-                    // def containerName = sh(script: "sudo docker ps -l -q --format '{{.Names}}'", returnStdout: true)
-
-                    
-                    // echo "The name of the last created container is: $containerName"
-                    
-                    // Now you can use the 'containerName' variable in subsequent stages or steps
                 }
             }
         }
-//     }
-// }
+
         stage('Tag and Push') {
             steps {
                 script {
-                    def buildVersion = sh(script: 'echo $BUILD_NUMBER', returnStatus: true)
+                    // def buildVersion = sh(script: 'echo $BUILD_NUMBER', returnStatus: true)
+                    def buildVersion = "1.0.${env.BUILD_NUMBER}"
                     sh "sudo docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:${buildVersion}"
                     
                     withCredentials([usernamePassword(credentialsId: '3fd6e258-dfed-4537-a548-c3272953e573', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
