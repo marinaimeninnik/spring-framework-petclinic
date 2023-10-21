@@ -28,18 +28,18 @@ pipeline {
         stage('Scan with SonarQube') {
             steps {
                 withSonarQubeEnv(installationName: 'SQ') { 
-                    // sh './mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
-                    script {
-                        // Specify the directory containing the compiled main (production) classes
-                        def compiledClassesDir = '/target/classes'
+                    sh 'mvn clean package org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
+                    // script {
+                    //     // Specify the directory containing the compiled main (production) classes
+                    //     def compiledClassesDir = 'target/classes'
                         
-                        // Specify the directory containing the compiled test classes
-                        def compiledTestClassesDir = '/target/test-classes'
+                    //     // Specify the directory containing the compiled test classes
+                    //     def compiledTestClassesDir = 'target/test-classes'
                         
-                        sh "./mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar " +
-                        "-Dsonar.java.binaries=$compiledClassesDir " +
-                        "-Dsonar.java.test.binaries=$compiledTestClassesDir"
-                    }
+                    //     sh "mvn clean package org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar " +
+                    //     "-Dsonar.java.binaries=$compiledClassesDir " +
+                    //     "-Dsonar.java.test.binaries=$compiledTestClassesDir"
+                    // }
                 }
             }
         }
