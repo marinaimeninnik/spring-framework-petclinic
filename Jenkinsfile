@@ -40,7 +40,6 @@ pipeline {
                         "-Dsonar.java.binaries=$compiledClassesDir " +
                         "-Dsonar.java.test.binaries=$compiledTestClassesDir"
                     }
-                    }
                 }
             }
         }
