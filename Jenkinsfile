@@ -25,9 +25,16 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Scan with SonarQube') {
             steps {
-                
+                withSonarQubeEnv(installationName: 'SQ') { 
+                    sh './mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {                
                 script {
                     sh "mvn clean package jib:dockerBuild -Djib.image=${IMAGE_NAME}:latest"
                 }
