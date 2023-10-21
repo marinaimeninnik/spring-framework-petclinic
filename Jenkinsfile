@@ -31,10 +31,10 @@ pipeline {
                     // sh './mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
                     script {
                         // Specify the directory containing the compiled main (production) classes
-                        def compiledClassesDir = '/home/vagrant/workspace/pet_clinic_CI_CD/CI/target/classes'
+                        def compiledClassesDir = '/target/classes'
                         
                         // Specify the directory containing the compiled test classes
-                        def compiledTestClassesDir = '/home/vagrant/workspace/pet_clinic_CI_CD/CI/target/test-classes'
+                        def compiledTestClassesDir = '/target/test-classes'
                         
                         sh "./mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar " +
                         "-Dsonar.java.binaries=$compiledClassesDir " +
