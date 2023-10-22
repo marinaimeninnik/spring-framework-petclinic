@@ -19,14 +19,16 @@ pipeline {
         stage('Terraform - Deploy Infrastructure') {
                 steps {
                     script {
+                        echo "${AWS_ACCESS_KEY_ID}"
+                        echo "${AWS_SECRET_ACCESS_KEY}"
                     //    if (params.ENVIRONMENT_TYPE == 'dev') {
-                            dir('terraform/dev') {
-                                sh 'terraform init'
-                                sh 'terraform apply -var "access_key=${AWS_ACCESS_KEY_ID}" -var "secret_key=${AWS_SECRET_ACCESS_KEY}"'
-                                def ec2PublicIP = sh(script: 'terraform output -json ec2_public_ip', returnStdout: true).trim()
-                                echo "EC2 Instance IP: $ec2PublicIP"
-                                // Use $ec2PublicIP to check the Docker container deployment
-                            }
+                            // dir('terraform/dev') {
+                            //     sh 'terraform init'
+                            //     sh 'terraform apply -var "access_key=${AWS_ACCESS_KEY_ID}" -var "secret_key=${AWS_SECRET_ACCESS_KEY}"'
+                            //     def ec2PublicIP = sh(script: 'terraform output -json ec2_public_ip', returnStdout: true).trim()
+                            //     echo "EC2 Instance IP: $ec2PublicIP"
+                            //     // Use $ec2PublicIP to check the Docker container deployment
+                            // }
                         // } else if (params.ENVIRONMENT_TYPE == 'prod') {
                         //     dir('terraform/prod') {
                         //         sh 'terraform init'
