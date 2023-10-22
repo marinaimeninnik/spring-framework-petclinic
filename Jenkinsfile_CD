@@ -19,9 +19,10 @@ pipeline {
         stage('Terraform - Deploy Infrastructure') {
                 steps {
                     script {
-                        dir('terraform/dev')
-                        echo "${AWS_ACCESS_KEY_ID}"
-                        echo "${AWS_SECRET_ACCESS_KEY}"
+                        dir('terraform/dev'){
+                            echo "${AWS_ACCESS_KEY_ID}"
+                            echo "${AWS_SECRET_ACCESS_KEY}"
+                        }
                     //    if (params.ENVIRONMENT_TYPE == 'dev') {
                             // dir('terraform/dev') {
                             //     sh 'terraform init'
