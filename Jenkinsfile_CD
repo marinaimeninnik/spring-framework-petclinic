@@ -17,13 +17,19 @@ pipeline {
         }
         stage('Terraform init') {
             steps {
-                sh 'terraform init'
+                script {
+                    dir('terraform/dev'){
+                        sh 'terraform init'}
+                    }
             }
         }
         stage('Plan') {
             steps {
-                sh 'terraform plan -out tfplan'
+                script {
+                    dir('terraform/dev'){
+                        sh 'terraform plan -out tfplan'}
                 // sh 'terraform show -no-color tfplan > tfplan.txt'
+                }
             }
         }
     }
