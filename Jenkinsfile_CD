@@ -21,8 +21,12 @@ pipeline {
                     script {
                     //    if (params.ENVIRONMENT_TYPE == 'dev') {
                             dir('terraform/dev') {
+                                sh "aws configure set aws_access_key_id ${env.AWS_ACCESS_KEY_ID}"
+                                sh "aws configure set aws_secret_access_key ${env.AWS_SECRET_ACCESS_KEY}"
                                 sh "terraform init"
-                                sh "terraform apply -var 'access_key=${env.AWS_ACCESS_KEY_ID}' -var 'secret_key=${env.AWS_SECRET_ACCESS_KEY}'"
+                                sh "terraform workspace new dev || terraform workspace select dev"
+                                sh "terraform apply -var 'access_key=${env.AWS_ACCESS_KEY_ID}' -var 'secret_key=${env.AWS_SECRET_ACCESS_KEY}' -auto-approve"
+                                sh "terraform state push s3://your-s3-bucket-name/path/to/your/terraform.tfstate"
                                 // def ec2PublicIP = sh(script: 'terraform output -json ec2_public_ip', returnStdout: true).trim()
                                 // echo "EC2 Instance IP: $ec2PublicIP"
                                 // Use $ec2PublicIP to check the Docker container deployment
