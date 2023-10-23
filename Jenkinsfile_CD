@@ -4,54 +4,27 @@ pipeline {
     }
 
     environment {
-        AWS_ACCESS_KEY_ID = credentials('AWS_access_key')
+        AWS_ACCESS_KEY_ID     = credentials('AWS_access_key')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_secret_key')
+        AWS_DEFAULT_REGION    = 'eu-central-1'
     }
 
     stages {
-        // stage('Terraform Apply') {
-        //     steps {
-        //         sh 'terraform init'
-        //         sh 'terraform apply -var "access_key=${AWS_ACCESS_KEY_ID}" -var "secret_key=${AWS_SECRET_ACCESS_KEY}"'
-        //     }
-        // }
-
-        stage('Terraform - Deploy Infrastructure') {
-                steps {
-                    script {
-                    //    if (params.ENVIRONMENT_TYPE == 'dev') {
-                            dir('terraform/dev') {
-                                    // sh "aws configure set aws_access_key_id ${env.AWS_ACCESS_KEY_ID}"
-                                    // sh "aws configure set aws_secret_access_key ${env.AWS_SECRET_ACCESS_KEY}"
-                                    // sh "terraform init"
-                                    // sh "terraform workspace new dev || terraform workspace select dev"
-                                    // sh "terraform apply -var 'access_key=${env.AWS_ACCESS_KEY_ID}' -var 'secret_key=${env.AWS_SECRET_ACCESS_KEY}' -auto-approve"
-                                    // sh "terraform state push s3://your-s3-bucket-name/path/to/your/terraform.tfstate"
-                               
-                                    sh "terraform init -reconfigure"
-
-                                    // Apply the Terraform changes
-                                    sh "terraform apply"
-                                    //  -var 'access_key=${env.AWS_ACCESS_KEY_ID}' -var 'secret_key=${env.AWS_SECRET_ACCESS_KEY}' -auto-approve"
-                            }
-
-                                    // // def ec2PublicIP = sh(script: 'terraform output -json ec2_public_ip', returnStdout: true).trim()
-                                // echo "EC2 Instance IP: $ec2PublicIP"
-                                // Use $ec2PublicIP to check the Docker container deployment
-                            }
-                        // } else if (params.ENVIRONMENT_TYPE == 'prod') {
-                        //     dir('terraform/prod') {
-                        //         sh 'terraform init'
-                        //         sh 'terraform apply -auto-approve'
-                        //         def ec2PublicIP = sh(script: 'terraform output -json ec2_public_ip', returnStdout: true).trim()
-                        //         echo "EC2 Instance IP: $ec2PublicIP"
-                        //         // Use $ec2PublicIP to check the Docker container deployment
-                        //     }
-                        }
-                    }
-                }
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/marinaimeninnik/spring-framework-petclinic.git'
             }
-
-        
-    // }
-// }
+        }
+        stage('Terraform init') {
+            steps {
+                sh 'terraform init'
+            }
+        }
+        stage('Plan') {
+            steps {
+                sh 'terraform plan -out tfplan'
+                // sh 'terraform show -no-color tfplan > tfplan.txt'
+            }
+        }
+    }
+}
