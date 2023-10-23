@@ -28,10 +28,11 @@ pipeline {
                                     // sh "terraform apply -var 'access_key=${env.AWS_ACCESS_KEY_ID}' -var 'secret_key=${env.AWS_SECRET_ACCESS_KEY}' -auto-approve"
                                     // sh "terraform state push s3://your-s3-bucket-name/path/to/your/terraform.tfstate"
                                
-                                    sh "terraform init -reconfigure -backend-config=backend.tfvars"
+                                    sh "terraform init"
 
                                     // Apply the Terraform changes
-                                    sh "terraform apply -var 'access_key=${env.AWS_ACCESS_KEY_ID}' -var 'secret_key=${env.AWS_SECRET_ACCESS_KEY}' -auto-approve"
+                                    sh "terraform apply"
+                                    //  -var 'access_key=${env.AWS_ACCESS_KEY_ID}' -var 'secret_key=${env.AWS_SECRET_ACCESS_KEY}' -auto-approve"
                             }
 
                                     // // def ec2PublicIP = sh(script: 'terraform output -json ec2_public_ip', returnStdout: true).trim()
