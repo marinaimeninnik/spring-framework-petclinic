@@ -3,6 +3,11 @@ pipeline {
         label 'ubuntu22_04'
     }
 
+    parameters {
+        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
+        choice(name: 'action', choices: ['apply', 'destroy'], description: 'Select the action to perform')
+    }
+
     environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_access_key')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_secret_key')
@@ -23,13 +28,19 @@ pipeline {
                     }
             }
         }
-        stage('Plan') {
+        // stage('Plan') {
+        //     steps {
+        //         script {
+        //             dir('terraform/dev'){
+        //                 sh 'terraform plan -out tfplan'}
+        //         // sh 'terraform show -no-color tfplan > tfplan.txt'
+        //         }
+        //     }
+        // }
+        stage ('Terraform action') {
             steps {
-                script {
-                    dir('terraform/dev'){
-                        sh 'terraform plan -out tfplan'}
-                // sh 'terraform show -no-color tfplan > tfplan.txt'
-                }
+                echo "Terraform action from the parameter is ${action}"
+                sh ("terraform ${action} -auto-approve")
             }
         }
     }
