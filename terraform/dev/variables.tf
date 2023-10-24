@@ -16,7 +16,6 @@ variable "aws_region" {
   default     = "eu-central-1"
 }
 
-
 variable "ami" {
    type        = string
    description = "Ubuntu AMI ID"
@@ -39,4 +38,10 @@ variable "docker_image" {
   type        = string
   description = "Docker image to deploy"
   default     = "marinaimeninnik/spring-framework-petclinic:1.0.61"
+}
+
+variable "ssh_key_name" {
+  type        = string
+  description = "Name of the SSH key credential in Jenkins"
+  default     = "ubuntu (terraform-remote-exec)"
 }
