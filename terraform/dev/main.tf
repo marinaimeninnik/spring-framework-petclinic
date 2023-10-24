@@ -21,11 +21,11 @@ resource "aws_instance" "public_instance" {
       host       = self.public_ip
     }
  }
-
- data "tls_private_key" "ssh_key" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-  private_key = data.jenkins_credentials.ssh.get("private_key")
- }
-
 }
+
+data "tls_private_key" "ssh_key" {
+    algorithm = "RSA"
+    rsa_bits  = 4096
+    private_key = data.jenkins_credentials.ssh.get("private_key")
+}
+
