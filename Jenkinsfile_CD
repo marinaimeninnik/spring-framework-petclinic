@@ -6,7 +6,7 @@ pipeline {
     parameters {
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
         choice(name: 'action', choices: ['apply', 'destroy'], description: 'Select the action to perform')
-        string(name: 'dockerImage', defaultValue: 'marinaimeninnik/spring-framework-petclinic:latest', description: 'Docker image to deploy')
+        choice(name: 'dockerImage', choices: ['marinaimeninnik/spring-framework-petclinic:latest'], description: 'Docker image to deploy')
 
     }
 
