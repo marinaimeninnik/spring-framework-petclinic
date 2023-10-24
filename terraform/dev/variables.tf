@@ -34,3 +34,9 @@ variable "name_tag" {
    description = "Name of the EC2 instance"
    default     = "DEV EC2 Instance"
 }
+
+variable "docker_image" {
+  type        = string
+  description = "Docker image to deploy"
+  default     = "marinaimeninnik/spring-framework-petclinic:1.0.61"
+}
