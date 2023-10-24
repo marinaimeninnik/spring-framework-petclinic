@@ -39,8 +39,12 @@ pipeline {
         // }
         stage ('Terraform action') {
             steps {
-                echo "Terraform action from the parameter is ${action}"
-                sh ("terraform ${action} -auto-approve")
+                script {
+                    dir('terraform/dev'){
+                        echo "Terraform action from the parameter is ${action}"
+                        sh ("terraform ${action} -auto-approve")
+                    }
+                }
             }
         }
     }
