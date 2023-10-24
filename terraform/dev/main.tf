@@ -20,5 +20,6 @@ resource "aws_instance" "public_instance" {
       private_key = file("/var/lib/jenkins/.ssh/${var.ssh_key_name}")
       host       = self.public_ip
     }
+ }
 
 }
