@@ -40,8 +40,8 @@ variable "docker_image" {
   default     = "marinaimeninnik/spring-framework-petclinic:1.0.61"
 }
 
-variable "ssh_key_name" {
+variable "ssh_credentials_id" {
+  description = "Jenkins SSH credentials ID"
   type        = string
-  description = "Name of the SSH key credential in Jenkins"
-  default     = "ubuntu (terraform-remote-exec)"
+  default     = "terraform-remote-exec"  # Replace with your Jenkins SSH credential ID
 }

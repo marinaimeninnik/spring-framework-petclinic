@@ -43,8 +43,8 @@ pipeline {
             steps {
                 script {
                     dir('terraform/dev'){
-                        def credentialsId = 'terraform-remote-exec'
-                        withCredentials([sshUserPrivateKey(credentialsId: credentialsId, keyFileVariable: 'SSH_KEY')]) {
+                        def ssh_credentials_id = 'terraform-remote-exec'
+                        withCredentials([sshUserPrivateKey(credentialsId: ssh_credentials_id, keyFileVariable: 'SSH_KEY')]) {
 
                             echo "Terraform action from the parameter is ${action}"
                             sh "terraform ${action} -auto-approve -var=\"docker_image=${params.dockerImage}\""

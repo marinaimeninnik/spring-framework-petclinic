@@ -17,9 +17,15 @@ resource "aws_instance" "public_instance" {
     connection {
       type       = "ssh"
       user       = "ubuntu"
-      private_key = file("/var/lib/jenkins/.ssh/${var.ssh_key_name}")
+      private_key = tls_private_key.ssh_key.private_key_pem
       host       = self.public_ip
     }
+ }
+
+ data "tls_private_key" "ssh_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+  private_key = data.jenkins_credentials.ssh.get("private_key")
  }
 
 }
