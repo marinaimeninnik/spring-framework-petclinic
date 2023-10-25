@@ -4,9 +4,9 @@ pipeline {
     }
 
     parameters {
-        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
+        // booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
         choice(name: 'action', choices: ['apply', 'destroy'], description: 'Select the action to perform')
-        choice(name: 'dockerImage', choices: ['marinaimeninnik/spring-framework-petclinic:latest'], description: 'Docker image to deploy')
+        // choice(name: 'dockerImage', choices: ['marinaimeninnik/spring-framework-petclinic:latest'], description: 'Docker image to deploy')
 
     }
 
@@ -30,28 +30,17 @@ pipeline {
                     }
             }
         }
-        // stage('Plan') {
-        //     steps {
-        //         script {
-        //             dir('terraform/dev'){
-        //                 sh 'terraform plan -out tfplan'}
-        //         // sh 'terraform show -no-color tfplan > tfplan.txt'
-        //         }
-        //     }
-        // }
+        
         stage ('Terraform action') {
             steps {
                 script {
                     dir('terraform/dev'){
-                        def ssh_credentials_id = 'terraform-remote-exec'
-                        withCredentials([sshUserPrivateKey(credentialsId: ssh_credentials_id, keyFileVariable: 'SSH_KEY')]) {
-
-                            echo "Terraform action from the parameter is ${action}"
-                            sh "terraform ${action} -auto-approve -var=\"docker_image=${params.dockerImage}\""
+                        echo "Terraform action from the parameter is ${action}"
+                        sh "terraform ${action}"
                         }
                     }
                 }
             }
         }
     }
-}
+// }

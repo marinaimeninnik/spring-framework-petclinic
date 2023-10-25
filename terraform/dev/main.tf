@@ -5,27 +5,5 @@ resource "aws_instance" "public_instance" {
  tags = {
    Name = var.name_tag,
  }
-
- provisioner "remote-exec" {
-    inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y docker.io",
-      "sudo docker pull ${var.docker_image}",
-      "sudo docker run -d -p 80:80 --name my-container ${var.docker_image}"
-    ]
-
-    connection {
-      type       = "ssh"
-      user       = "ubuntu"
-      private_key = tls_private_key.ssh_key.private_key_pem
-      host       = self.public_ip
-    }
- }
-}
-
-data "tls_private_key" "ssh_key" {
-    algorithm = "RSA"
-    rsa_bits  = 4096
-    private_key = data.jenkins_credentials.ssh.get("private_key")
 }
 
