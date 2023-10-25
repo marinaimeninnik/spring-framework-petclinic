@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script{
                     withCredentials([usernamePassword(credentialsId: '3fd6e258-dfed-4537-a548-c3272953e573', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')]) {                        
-                        def dockerRun = 'sudo docker run -p 8080:8080 -d marinaimeninnik/spring-framework-petclinic:latest'
+                        def dockerRun = 'sudo docker run -p 8080:8080 -d marinaimeninnik/spring-framework-petclinic'
                         def dockerLogin = 'sudo docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
                         sshagent(['dev-server']) {
                             sh "ssh -o StrictHostKeyChecking=no ubuntu@18.193.72.131 ip a"
