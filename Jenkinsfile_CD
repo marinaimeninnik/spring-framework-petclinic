@@ -5,51 +5,45 @@ pipeline {
 
     parameters {
         // booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
-        choice(name: 'action', choices: ['apply', 'destroy'], description: 'Select the action to perform')
         // choice(name: 'dockerImage', choices: ['marinaimeninnik/spring-framework-petclinic:latest'], description: 'Docker image to deploy')
         choice(name: 'environment', choices: ['dev', 'qa'], description: 'Select environment for deployment')
 
     }
 
     environment {
-        AWS_ACCESS_KEY_ID     = credentials('AWS_access_key')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_secret_key')
-        AWS_DEFAULT_REGION    = 'eu-central-1'
+        DOCKERHUB_CREDENTIALS = credentials('3fd6e258-dfed-4537-a548-c3272953e573')
     }
 
     stages {
+        stage('Clean workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
         stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/marinaimeninnik/spring-framework-petclinic.git'
+            steps{
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/marinaimeninnik/spring-framework-petclinic.git']])
             }
         }
-        stage('Terraform init') {
+
+        stage('Run container on ${environment} server') {
             steps {
-                script {
-                    dir('terraform/dev'){
-                        sh 'terraform init -migrate-state'}
-                    }
-            }
-        }
-        
-        stage ('Terraform action') {
-            steps {
-                script {
-                    if (params.environment == 'dev') {
-                        dir('terraform/dev'){
-                            echo "Terraform action from the parameter is ${action}"
-                            sh "terraform ${action} -auto-approve"
-                            }
-                        }
-                    else if (params.environment == 'qa') {
-                        dir('terraform/qa'){
-                            echo "Terraform action from the parameter is ${action}"
-                            sh "terraform ${action} -auto-approve"
-                            }
+                script{
+                    def dockerRun = 'sudo docker run -p 8080:8080 -d marinaimeninnik/spring-framework-petclinic:latest'
+                    withCredentials([usernamePassword(credentialsId: '3fd6e258-dfed-4537-a548-c3272953e573', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')]) {                        
+                        sshagent(['dev-server']) {
+                            sh """
+                               ssh -o StrictHostKeyChecking=no ubuntu@18.193.72.131 <<< EOF
+                               sudo docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW
+                               $dockerRun
+                               EOF
+                            """
+                            // sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.28.145 ${dockerRun}'
                         }
                     }
-                }
+                }    
             }
         }
     }
-// }
+}
