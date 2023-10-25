@@ -28,7 +28,6 @@ pipeline {
                         def dockerRun = 'sudo docker run -p 8080:8080 -d marinaimeninnik/spring-framework-petclinic'
                         def dockerLogin = 'sudo docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
                         sshagent(['dev-server']) {
-                            sh "ssh -o StrictHostKeyChecking=no ubuntu@18.193.72.131 ip a"
                             sh "ssh -o StrictHostKeyChecking=no ubuntu@18.193.72.131 ${dockerLogin}"
                             sh "ssh -o StrictHostKeyChecking=no ubuntu@18.193.72.131 ${dockerRun}"                            
                         }
