@@ -7,6 +7,7 @@ pipeline {
         // booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
         choice(name: 'action', choices: ['apply', 'destroy'], description: 'Select the action to perform')
         // choice(name: 'dockerImage', choices: ['marinaimeninnik/spring-framework-petclinic:latest'], description: 'Docker image to deploy')
+        choice(name: 'environment', choices: ['dev', 'qa'], description: 'Select environment for deployment')
 
     }
 
@@ -34,9 +35,17 @@ pipeline {
         stage ('Terraform action') {
             steps {
                 script {
-                    dir('terraform/dev'){
-                        echo "Terraform action from the parameter is ${action}"
-                        sh "terraform ${action} -auto-approve"
+                    if (params.environment == 'dev') {
+                        dir('terraform/dev'){
+                            echo "Terraform action from the parameter is ${action}"
+                            sh "terraform ${action} -auto-approve"
+                            }
+                        }
+                    else if (params.environment == 'qa') {
+                        dir('terraform/qa'){
+                            echo "Terraform action from the parameter is ${action}"
+                            sh "terraform ${action} -auto-approve"
+                            }
                         }
                     }
                 }
