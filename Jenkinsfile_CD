@@ -21,12 +21,6 @@ pipeline {
             }
         }
 
-        stage('Checkout') {
-            steps{
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/marinaimeninnik/spring-framework-petclinic.git']])
-            }
-        }
-
         stage('Run container on ${environment} server') {
             steps {
                 script{
@@ -39,11 +33,6 @@ pipeline {
                                 echo 'hello there' \n
                                 ${dockerLogin} \n
                                 ${dockerRun}
-                                // echo "'$DOCKERHUB_CREDENTIALS_PSW'"
-                            //    sudo docker login -u \$DOCKERHUB_CREDENTIALS_USR -p '$DOCKERHUB_CREDENTIALS_PSW'
-                            //    $dockerRun
-                            
-                            // sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.28.145 ${dockerRun}'
                             """
                             
                         }
