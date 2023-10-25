@@ -29,7 +29,8 @@ pipeline {
                         def dockerLogin = 'sudo docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
                         sshagent(['dev-server']) {
                             sh "ssh -o StrictHostKeyChecking=no ubuntu@18.193.72.131 ip a"
-                            sh "ssh -o StrictHostKeyChecking=no ubuntu@18.193.72.131 ${dockerLogin} | ${dockerRun}"                            
+                            sh "ssh -o StrictHostKeyChecking=no ubuntu@18.193.72.131 ${dockerLogin}"
+                            sh "ssh -o StrictHostKeyChecking=no ubuntu@18.193.72.131 ${dockerRun}"                            
                         }
                     }
                 }    
