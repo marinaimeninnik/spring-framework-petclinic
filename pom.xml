@@ -79,8 +79,8 @@
 
         <!-- Docker image -->
         <docker.jib-maven-plugin.version>3.3.1</docker.jib-maven-plugin.version>
-        <!-- <docker.image.prefix>springcommunity</docker.image.prefix> -->
-        <docker.image.prefix>marinaimeninnik</docker.image.prefix>
+        <docker.image.prefix>springcommunity</docker.image.prefix>
+        <!-- <docker.image.prefix>marinaimeninnik</docker.image.prefix> -->
 
     </properties>
 
