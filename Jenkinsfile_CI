@@ -36,7 +36,7 @@ pipeline {
             steps {                
                 script {
                     // sh "mvn clean package jib:dockerBuild -Djib.image=${IMAGE_NAME}:latest"
-                    sh "mvn jib:build -Djib.image=${IMAGE_NAME}:latest"
+                    sh "mvn jib:dockerBuild -Djib.image=${IMAGE_NAME}:latest"
                 }
             }
         }
