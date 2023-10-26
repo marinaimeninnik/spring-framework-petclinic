@@ -37,10 +37,10 @@ pipeline {
                 script {
                         sh "mvn clean package"
                         sh "mvn jib:dockerBuild"
-                    }
                 }
             }
         }
+        
 
         stage('Tag and Push') {
             steps {
