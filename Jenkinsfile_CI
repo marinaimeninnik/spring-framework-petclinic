@@ -35,12 +35,13 @@ pipeline {
         stage('Build Docker Image') {
             steps {                
                 script {
-                    sh "pwd"
-                    dir('spring-framework-petclinic') {
+                    
+                    // dir('spring-framework-petclinic') {
+                        sh "pwd"
                         sh "mvn clean package"
                         sh "mvn jib:build"
                         // sh "mvn jib:dockerBuild -Djib.image=${IMAGE_NAME}:latest"
-                    }
+                    // }
                 }
             }
         }
