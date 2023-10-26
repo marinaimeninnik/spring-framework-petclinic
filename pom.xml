@@ -456,7 +456,7 @@
                 <configuration>
                     <to>
                         <!-- <image>docker.io/${docker.image.prefix}/${project.artifactId}</image> -->
-                        <image>marinaimeninnik/${project.artifactId}</image>
+                        <image>${project.artifactId}</image>
                         <tags>
                             <!-- <tag>${project.version}</tag> -->
                             <tag>latest</tag>
